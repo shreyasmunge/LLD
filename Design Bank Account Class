@@ -1,0 +1,51 @@
+'''Design Bank Account Class
+Problem: Create a BankAccount class that manages a simple bank account with deposit, withdrawal, and balance checking functionality.
+
+Requirements:
+
+Fields: accountNumber, ownerName, balance
+Constructor that initializes the account with owner name and account number (balance starts at 0)
+deposit(amount): adds money to balance (only positive amounts)
+withdraw(amount): removes money if sufficient balance exists, returns success/failure
+getBalance(): returns current balance'''
+
+class BankAccount:
+    def __init__ (self,accountNumber,ownerName):
+        self.accountNumber = accountNumber
+        self.ownerName = ownerName
+        self._balance = 0
+    
+    def deposit(self,amount):
+        if amount<=0:
+            print('Deposit muct be positive')
+            return
+        self._balance+=amount
+        return
+    
+    def withdraw(self,amount):
+        if self._balance>=amount:
+            self._balance-=amount
+            print(f"successfuly withdrawed amount :{amount}")
+            return True
+        print("not sufficient balance") 
+        return False
+    
+    def getBalance(self):
+        return self._balance
+         
+    
+if __name__ == "__main__":
+    customer1 = BankAccount(2000, "Shreyas")
+    customer2 = BankAccount(1000, "Sara")
+    
+    customer1.deposit(5000)
+    customer1.withdraw(2000)
+    customer2.deposit(302)
+    
+    print(customer1.getBalance())
+    print(customer2.getBalance() )
+    customer1.withdraw(4000)
+     
+    
+    
+    
