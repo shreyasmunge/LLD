@@ -1,0 +1,42 @@
+"""Design Library Book Class
+Problem: Create a Book class for a library management system.
+
+Requirements:
+
+Fields: title, author, isbn, isAvailable
+Constructor that initializes all fields (book starts as available)
+borrowBook(): marks book as unavailable if currently available, returns success/failure
+returnBook(): marks book as available
+displayInfo(): prints book details including availability status"""
+
+class Library:
+    def __init__ (self,title,author,isbn):
+        self.title = title
+        self.author = author
+        self.isbn = isbn
+        self.isAvailable = True
+    
+    def borrowBook(self):
+        if self.isAvailable:
+            self.isAvailable = False
+            return True
+        return False
+    
+    def returnBook(self):
+        self.isAvailable = True
+    
+    def displayInfo(self):
+        print([self.title,self.author,self.isbn,self.isAvailable])
+    
+    
+if __name__ == "__main__":
+    book1 = Library("Got","martin",1234)
+    book2 = Library("Breaking Bad","Luther",1344)
+    
+    book1.borrowBook("Got")
+    print(book1.displayInfo("Got"))
+    book1.returnBook("Got")
+    print(book1.displayInfo("Got"))
+    
+    
+        
