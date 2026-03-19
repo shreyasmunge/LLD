@@ -1,0 +1,84 @@
+'''The Order class tracks an order's status, payment method, and total amount. It provides methods to advance the status through its lifecycle, cancel the order, and display order information.
+
+The key insight is that enums control the valid transitions: an order can only move forward through the status chain (PLACED to CONFIRMED to SHIPPED to DELIVERED), and cancellation is only allowed before shipping.
+'''
+
+from enum import Enum
+class OrderStatus(Enum): 
+    PLACED = "PLACED"
+    CONFIRMED= "CONFIRMED"
+    SHIPPED = "SHIPPED"
+    DELIVERED = "DELIVERED"
+    CANCELLED = "CANCELLED"
+
+class PaymentMethod(Enum):
+    CREDIT_CARD = ("CREDIT_CARD",1.75)
+    DEBIT_CARD = ("DEBIT_CARD",2.1)
+    UPI =( "UPI",1.2)
+    NET_BANKING = ("NET_BANKING",0.8)
+    
+    def __init__(self,payment_type:str , fee_charge:float):
+        self.payment_type = payment_type
+        self.fee_charge = fee_charge
+   
+
+class Order:
+    
+    _transition = {
+        OrderStatus.PLACED : OrderStatus.CONFIRMED,
+        OrderStatus.CONFIRMED : OrderStatus.SHIPPED,
+        OrderStatus.SHIPPED : OrderStatus.DELIVERED
+    }
+    
+    def __init__(self,order_id,payment_method:PaymentMethod,cost):
+        self._order_id = order_id
+        self._payment_method = payment_method
+        self._cost = cost
+        self._status = OrderStatus.PLACED
+        
+    def advance_status(self):
+        next_status = self._transition.get(self._status)
+        if next_status:
+            self._status = next_status
+            return True
+        return False
+    
+    def cancle_order(self):
+        if self._status in (OrderStatus.PLACED , OrderStatus.CONFIRMED):
+            self._status = OrderStatus.CANCELLED
+            print("order canncled successfuly")
+            return True
+        print("order cannot be canclled after shipped")
+        return False
+
+        
+    def order_info(self):
+        print(f'Your order is {self._status.value} successfully with order number {self._order_id}')
+
+    def bill(self):
+        print( self._cost + ((self._cost * self._payment_method.fee_charge) / 100))
+        
+    
+
+if __name__=="__main__":
+    order = Order(123,PaymentMethod.UPI,89)
+    order.order_info()
+    order.advance_status()
+    order.advance_status()
+    order.bill()
+    order.cancle_order()
+    order.order_info()
+    order.advance_status()
+    
+    
+    
+    
+            
+        
+        
+        
+    
+
+    
+    
+    
